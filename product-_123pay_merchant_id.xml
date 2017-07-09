@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<product productid="_123pay_merchant_id" active="1">
-    <title>123pay Payment Module</title>
-    <description>This product add a 123pay module for the payment APIs</description>
-    <version>4.X.X</version>
-    <url><![CDATA[https://123pay.ir]]></url>
-    <versioncheckurl><![CDATA[https://123pay.ir]]></versioncheckurl>
+<product productid="_123pay_payment_module" active="1">
+    <title>123pay Payment Plugin</title>
+    <description>123PAY Payment Plugin For VBULLETIN</description>
+    <version>1.0</version>
+    <url>http://123pay.ir</url>
+    <versioncheckurl/>
     <dependencies>
     </dependencies>
-
     <codes>
-        <code version="1.0">
-            <installcode><![CDATA[
-function toggle_subs()
+        <code version="*">
+            <installcode><![CDATA[function toggle_subs()
 {
 	global $vbulletin;
 
@@ -45,25 +43,21 @@ function toggle_subs()
 }
 
 $db->hide_errors();
-$apisettings = array(
-	"plmid"      => array("type" => "text", "value" => "", "validate" => "string"),
-	"d2t"      => array("type" => "text", "value" => "", "validate" => "string")
-);
 
-$apiapi = array(
+
+$api = array(
 	"title" => "_123pay",
 	"active" => 1,
 	"classname" => "_123pay",
 	"currency" => "usd",
 	"recurring" => 0,
-	"settings" => serialize($apisettings),
+	"settings" => '',
 );
 
-$db->query_write(fetch_query_sql($merchant_id, 'paymentapi'));
+$db->query_write(fetch_query_sql($api, 'paymentapi'));
 toggle_subs();
 $db->show_errors();]]></installcode>
-            <uninstallcode><![CDATA[
-function toggle_subs()
+            <uninstallcode><![CDATA[function _123pay()
 {
 	global $vbulletin;
 
@@ -99,37 +93,48 @@ function toggle_subs()
 
 $db->hide_errors();
 $db->query_write("DELETE FROM " . TABLE_PREFIX . "paymentapi WHERE classname = '_123pay'");
-toggle_subs();
+_123pay();
 $db->show_errors();]]></uninstallcode>
         </code>
     </codes>
     <templates>
-        <template name="subscription_payment__123pay" templatetype="template" date="1335278758" username="admin"
-                  version="1.0"><![CDATA[
-<input type="hidden" name="pl_mid" value="{vb:raw MERCHANT ID}" />
-<input type="hidden" name="pl_comments" value="{vb:rawphrase x_subscription, {vb:raw subinfo.title}} by {vb:raw userinfo.username}" />
-<input type="hidden" name="pl_callback_url" value="{vb:raw vboptions.bburl}/payment_gateway.php?method=_123pay&item={vb:raw item}" />
-<input type="hidden" name="pl_amount" value="{vb:raw cost}" />
-	]]></template>
+        <template name="_123pay" templatetype="template" date="1368465444" username="admin" version="1.0"><![CDATA[<input type="hidden" name="_123pay_description" value="{vb:rawphrase x_subscription, {vb:raw subinfo.title}} by {vb:raw userinfo.username}"/>
+<input type="hidden" name="_123pay_callback_url" value="{vb:raw vboptions.bburl}/payment_gateway.php?method=_123pay&item=" />
+<input type="hidden" name="_123pay_item" value="{vb:raw item}" />
+<h2>{vb:raw logo}</h2>
+<br/>
+<h2>123PAY Payment Plugin For VBULLETIN</h2>
+<br/>]]></template>
     </templates>
+    <stylevardfns>
+    </stylevardfns>
+    <stylevars>
+    </stylevars>
     <plugins>
+        <plugin active="1" executionorder="5">
+            <title>session</title>
+            <hookname>init_startup</hookname>
+            <phpcode><![CDATA[@session_start();
+				$_SESSION['_123pay_merchant_id']=$vbulletin->options['_123pay_merchant_id'];
+			]]></phpcode>
+        </plugin>
     </plugins>
     <phrases>
-        <phrasetype name="Subscription Tools" fieldname="subscription">
-            <phrase name="_123pay" date="1294078080" username="admin" version="1.0"><![CDATA[_123pay]]></phrase>
-            <phrase name="_123pay_order_instructions" date="1294078080" username="admin" version="1.00">
-                <![CDATA[To pay for your subscription using <a href="https://123pay.ir" target="_blank">123pay</a> click the button below and follow the onscreen instructions.]]></phrase>
-            <phrase name="setting__123pay_plmid_desc" date="1294078080" username="admin" version="1.00">
-                <![CDATA[Please enter your 123pay merchant_id]]></phrase>
-            <phrase name="setting__123pay_plmid_title" date="1294078080" username="admin" version="1.00">
-                <![CDATA[123Pay merchant_id]]></phrase>
-            <phrase name="setting__123pay_d2t_desc" date="1294078080" username="admin" version="1.00">
-                <![CDATA[Please enter Currency conversion rate to Toman]]></phrase>
-            <phrase name="setting__123pay_d2t_title" date="1294078080" username="admin" version="1.00">
-                <![CDATA[Currency exchange rate]]></phrase>
+        <phrasetype name="vBulletin Settings" fieldname="vbsettings">
+            <phrase name="setting__123pay_merchant_id_desc" date="1366921662" username="admin" version="1.00">
+                <![CDATA[Enter Merchant Id]]></phrase>
+            <phrase name="setting__123pay_merchant_id_title" date="1366921662" username="admin" version="1.00">
+                <![CDATA[Merchant Id]]></phrase>
+            <phrase name="settinggroup__123pay" date="1366921451" username="admin" version="1.00">
+                <![CDATA[123Pay Payment Gateway Setting]]></phrase>
         </phrasetype>
     </phrases>
     <options>
+        <settinggroup name="_123pay" displayorder="65535">
+            <setting varname="_123pay_merchant_id" displayorder="10">
+                <datatype>free</datatype>
+            </setting>
+        </settinggroup>
     </options>
     <helptopics>
     </helptopics>
@@ -137,4 +142,6 @@ $db->show_errors();]]></uninstallcode>
     </cronentries>
     <faqentries>
     </faqentries>
+    <navigation>
+    </navigation>
 </product>
