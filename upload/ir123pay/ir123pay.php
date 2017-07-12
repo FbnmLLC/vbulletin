@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-if ( isset( $_SESSION['_123pay_merchant_id'] ) && isset( $_POST['_123pay_callback_url'] ) ) {
-	$item = $_POST['_123pay_item'];
-	if ( isset( $_SESSION[ '_123pay_amount' . $item ] ) ) {
+if ( isset( $_SESSION['ir123pay_merchant_id'] ) && isset( $_POST['ir123pay_callback_url'] ) ) {
+	$item = $_POST['ir123pay_item'];
+	if ( isset( $_SESSION[ 'ir123pay_amount' . $item ] ) ) {
 		echo 'Loading...';
 		function create( $merchant_id, $amount, $callback_url ) {
 			$ch = curl_init();
@@ -17,9 +17,9 @@ if ( isset( $_SESSION['_123pay_merchant_id'] ) && isset( $_POST['_123pay_callbac
 			return $response;
 		}
 
-		$merchant_id  = $_SESSION['_123pay_merchant_id'];
-		$amount       = $_SESSION[ '_123pay_amount' . $item ] * 10000;
-		$callback_url = urlencode( $_POST['_123pay_callback_url'] . $item );
+		$merchant_id  = $_SESSION['ir123pay_merchant_id'];
+		$amount       = $_SESSION[ 'ir123pay_amount' . $item ] * 10000;
+		$callback_url = urlencode( $_POST['ir123pay_callback_url'] . $item );
 
 		$response = create( $merchant_id, $amount, $callback_url );
 		$result   = json_decode( $response );

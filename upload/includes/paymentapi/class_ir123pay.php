@@ -3,14 +3,14 @@ if ( ! isset( $GLOBALS['vbulletin']->db ) ) {
 	exit;
 }
 
-class vB_PaidSubscriptionMethod__123pay extends vB_PaidSubscriptionMethod {
+class vB_PaidSubscriptionMethod_ir123pay extends vB_PaidSubscriptionMethod {
 	var $supports_recurring = false;
 	var $display_feedback = true;
 
 	function verify_payment() {
 		@session_start();
-		if ( isset( $_SESSION['_123pay_merchant_id'] ) && ( isset( $_REQUEST['State'] ) && $_REQUEST['State'] == 'OK' ) && isset( $_REQUEST['RefNum'] ) ) {
-			$merchant_id = $_SESSION['_123pay_merchant_id'];
+		if ( isset( $_SESSION['ir123pay_merchant_id'] ) && ( isset( $_REQUEST['State'] ) && $_REQUEST['State'] == 'OK' ) && isset( $_REQUEST['RefNum'] ) ) {
+			$merchant_id = $_SESSION['ir123pay_merchant_id'];
 			$this->registry->input->clean_array_gpc( 'r', array( 'item' => TYPE_STR, 'au' => TYPE_STR ) );
 			$this->transaction_id = $this->registry->GPC['item'];
 			if ( ! empty( $this->registry->GPC['item'] ) ) {
@@ -68,11 +68,11 @@ class vB_PaidSubscriptionMethod__123pay extends vB_PaidSubscriptionMethod {
 		global $vbphrase, $vbulletin, $show;
 		@session_start();
 		$cost                                 = floor( $cost );
-		$_SESSION[ '_123pay_amount' . $item ] = $cost;
-		$form['action']                       = '_123pay/_123pay.php';
+		$_SESSION[ 'ir123pay_amount' . $item ] = $cost;
+		$form['action']                       = 'ir123pay/ir123pay.php';
 		$form['method']                       = 'POST';
 		$settings                             = &$this->settings;
-		$templater                            = vB_Template::create( '_123pay' );
+		$templater                            = vB_Template::create( 'ir123pay' );
 		$templater->register( 'item', $item );
 		$templater->register( 'userinfo', $userinfo );
 		$form['hiddenfields'] .= $templater->render();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<product productid="_123pay_payment_module" active="1">
+<product productid="ir123pay_payment_module" active="1">
     <title>123pay Payment Plugin</title>
     <description>123PAY Payment Plugin For VBULLETIN</description>
     <version>1.0</version>
@@ -46,9 +46,9 @@ $db->hide_errors();
 
 
 $api = array(
-	"title" => "_123pay",
+	"title" => "ir123pay",
 	"active" => 1,
-	"classname" => "_123pay",
+	"classname" => "ir123pay",
 	"currency" => "usd",
 	"recurring" => 0,
 	"settings" => '',
@@ -57,7 +57,7 @@ $api = array(
 $db->query_write(fetch_query_sql($api, 'paymentapi'));
 toggle_subs();
 $db->show_errors();]]></installcode>
-            <uninstallcode><![CDATA[function _123pay()
+            <uninstallcode><![CDATA[function ir123pay()
 {
 	global $vbulletin;
 
@@ -92,15 +92,15 @@ $db->show_errors();]]></installcode>
 }
 
 $db->hide_errors();
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "paymentapi WHERE classname = '_123pay'");
-_123pay();
+$db->query_write("DELETE FROM " . TABLE_PREFIX . "paymentapi WHERE classname = 'ir123pay'");
+ir123pay();
 $db->show_errors();]]></uninstallcode>
         </code>
     </codes>
     <templates>
-        <template name="_123pay" templatetype="template" date="1368465444" username="admin" version="1.0"><![CDATA[<input type="hidden" name="_123pay_description" value="{vb:rawphrase x_subscription, {vb:raw subinfo.title}} by {vb:raw userinfo.username}"/>
-<input type="hidden" name="_123pay_callback_url" value="{vb:raw vboptions.bburl}/payment_gateway.php?method=_123pay&item=" />
-<input type="hidden" name="_123pay_item" value="{vb:raw item}" />
+        <template name="ir123pay" templatetype="template" date="1368465444" username="admin" version="1.0"><![CDATA[<input type="hidden" name="ir123pay_description" value="{vb:rawphrase x_subscription, {vb:raw subinfo.title}} by {vb:raw userinfo.username}"/>
+<input type="hidden" name="ir123pay_callback_url" value="{vb:raw vboptions.bburl}/payment_gateway.php?method=ir123pay&item=" />
+<input type="hidden" name="ir123pay_item" value="{vb:raw item}" />
 <h2>{vb:raw logo}</h2>
 <br/>
 <h2>123PAY Payment Plugin For VBULLETIN</h2>
@@ -115,23 +115,23 @@ $db->show_errors();]]></uninstallcode>
             <title>session</title>
             <hookname>init_startup</hookname>
             <phpcode><![CDATA[@session_start();
-				$_SESSION['_123pay_merchant_id']=$vbulletin->options['_123pay_merchant_id'];
+				$_SESSION['ir123pay_merchant_id']=$vbulletin->options['ir123pay_merchant_id'];
 			]]></phpcode>
         </plugin>
     </plugins>
     <phrases>
         <phrasetype name="vBulletin Settings" fieldname="vbsettings">
-            <phrase name="setting__123pay_merchant_id_desc" date="1366921662" username="admin" version="1.00">
+            <phrase name="setting_ir123pay_merchant_id_desc" date="1366921662" username="admin" version="1.00">
                 <![CDATA[Enter Merchant Id]]></phrase>
-            <phrase name="setting__123pay_merchant_id_title" date="1366921662" username="admin" version="1.00">
+            <phrase name="setting_ir123pay_merchant_id_title" date="1366921662" username="admin" version="1.00">
                 <![CDATA[Merchant Id]]></phrase>
-            <phrase name="settinggroup__123pay" date="1366921451" username="admin" version="1.00">
+            <phrase name="settinggroup_ir123pay" date="1366921451" username="admin" version="1.00">
                 <![CDATA[123Pay Payment Gateway Setting]]></phrase>
         </phrasetype>
     </phrases>
     <options>
-        <settinggroup name="_123pay" displayorder="65535">
-            <setting varname="_123pay_merchant_id" displayorder="10">
+        <settinggroup name="ir123pay" displayorder="65535">
+            <setting varname="ir123pay_merchant_id" displayorder="10">
                 <datatype>free</datatype>
             </setting>
         </settinggroup>
